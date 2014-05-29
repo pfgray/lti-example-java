@@ -1,6 +1,6 @@
 package net.paulgray.mockltiapp;
 
-import org.imsglobal.spring.LtiKeySecretService;
+import org.imsglobal.aspect.LtiKeySecretService;
 
 /**
  * Created by paul on 5/28/14.

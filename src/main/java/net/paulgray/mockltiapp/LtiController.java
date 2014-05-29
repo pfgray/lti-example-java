@@ -7,10 +7,9 @@
 package net.paulgray.mockltiapp;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.imsglobal.basiclti.LtiVerificationResult;
-import org.imsglobal.spring.LtiLaunch;
+import org.imsglobal.aspect.LtiLaunch;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,12 @@ public class LtiController {
     @LtiLaunch
     @RequestMapping(value = {"/lti", "/test"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String ltiEntry(HttpServletRequest request, LtiVerificationResult result){
-        System.out.println("********************got result:" + result.toString());
+        
+        if(!result.getSuccess()){
+            System.out.println("********************got error: " + result.getError() + " - " + result.getMessage());
+        } else {
+            System.out.println("got user: " + result.getLtiLaunchResult().getUser().getId());
+        }
         return "lti";
     }
     
