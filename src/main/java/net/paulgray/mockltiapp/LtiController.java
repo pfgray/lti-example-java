@@ -8,6 +8,8 @@ package net.paulgray.mockltiapp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.imsglobal.basiclti.LtiVerificationResult;
 import org.imsglobal.spring.LtiLaunch;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,15 +25,15 @@ public class LtiController {
     
     @LtiLaunch
     @RequestMapping(value = {"/lti", "/test"}, method = {RequestMethod.POST, RequestMethod.GET})
-    public String ltiEntry(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("********************YOYOYOOYOY");
+    public String ltiEntry(HttpServletRequest request, LtiVerificationResult result){
+        System.out.println("********************got result:" + result.toString());
         return "lti";
     }
     
     @LtiLaunch(rejectIfBad = false, keyService = "keyService")
     @RequestMapping(value = {"/another"}, method = {RequestMethod.POST, RequestMethod.GET})
-    public String ltiTest(HttpServletRequest request, ModelMap map, HttpServletResponse response){
-        System.out.println("********************in another");
+    public String ltiTest(HttpServletRequest request, ModelMap map, LtiVerificationResult result){
+        System.out.println("********************got another result:" + result.toString());
         return "lti";
     }
     

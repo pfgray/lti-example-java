@@ -23,5 +23,5 @@
         <servlet-name>jsp</servlet-name>
         <url-pattern>/WEB-INF/views/*</url-pattern>
     </servlet-mapping>
-    
+
 </web-app>

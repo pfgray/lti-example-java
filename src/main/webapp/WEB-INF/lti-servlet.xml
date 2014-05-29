@@ -11,7 +11,11 @@
     
     <aop:aspectj-autoproxy/>
     
-    <bean id="myAspect" class="org.imsglobal.spring.LtiLaunchVerifier" />
+    <bean id="myAspect" class="org.imsglobal.spring.LtiLaunchVerifier">
+        <constructor-arg>
+            <bean class="net.paulgray.mockltiapp.MockKeyService"/>
+        </constructor-arg>
+    </bean>
  
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
         <property name="prefix">
