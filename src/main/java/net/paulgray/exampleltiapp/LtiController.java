@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package net.paulgray.mockltiapp;
+package net.paulgray.exampleltiapp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

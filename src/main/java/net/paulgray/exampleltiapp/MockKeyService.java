@@ -1,4 +1,4 @@
-package net.paulgray.mockltiapp;
+package net.paulgray.exampleltiapp;
 
 import org.imsglobal.aspect.LtiKeySecretService;
 
