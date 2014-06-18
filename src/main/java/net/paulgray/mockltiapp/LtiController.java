@@ -7,9 +7,12 @@
 package net.paulgray.mockltiapp;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.httpclient.HttpStatus;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.imsglobal.aspect.Lti;
 import org.imsglobal.basiclti.LtiVerificationResult;
-import org.imsglobal.aspect.LtiLaunch;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,23 +25,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LtiController {
     
-    @LtiLaunch
+    @Lti
     @RequestMapping(value = {"/lti", "/test"}, method = {RequestMethod.POST, RequestMethod.GET})
-    public String ltiEntry(HttpServletRequest request, LtiVerificationResult result){
-        
+    public String ltiEntry(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable{
+        System.out.println("serving request...");
         if(!result.getSuccess()){
-            System.out.println("********************got error: " + result.getError() + " - " + result.getMessage());
+            resp.setStatus(HttpStatus.SC_FORBIDDEN);
+            return "error";
         } else {
-            System.out.println("got user: " + result.getLtiLaunchResult().getUser().getId());
+            map.put("name", result.getLtiLaunchResult().getUser().getId());
+            ObjectMapper mapper = new ObjectMapper();
+            map.put("launch", mapper.writeValueAsString(result.getLtiLaunchResult()));
+            return "lti";
         }
-        return "lti";
     }
     
-    @LtiLaunch(rejectIfBad = false, keyService = "keyService")
+    @Lti
     @RequestMapping(value = {"/another"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String ltiTest(HttpServletRequest request, ModelMap map, LtiVerificationResult result){
         System.out.println("********************got another result:" + result.toString());
         return "lti";
     }
-    
+
 }

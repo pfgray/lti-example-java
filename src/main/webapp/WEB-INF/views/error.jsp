@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : lti.jsp
     Created on : May 24, 2014, 10:58:04 PM
     Author     : pgray
@@ -9,10 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>MockLti</title>
+        <title>Access Denied</title>
     </head>
     <body>
-        <h1>Hello ${name}</h1>
-        <pre>${launch}</pre>
+        <h1 style="color:red;">Access Denied!</h1>
     </body>
 </html>
