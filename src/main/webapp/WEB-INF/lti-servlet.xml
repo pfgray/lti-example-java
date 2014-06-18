@@ -7,13 +7,13 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
  
-    <context:component-scan base-package="net.paulgray.mockltiapp" />
+    <context:component-scan base-package="net.paulgray.exampleltiapp" />
     
     <aop:aspectj-autoproxy/>
     
     <bean id="myAspect" class="org.imsglobal.aspect.LtiLaunchVerifier">
         <constructor-arg>
-            <bean class="net.paulgray.mockltiapp.MockKeyService"/>
+            <bean class="net.paulgray.exampleltiapp.MockKeyService"/>
         </constructor-arg>
     </bean>
  
