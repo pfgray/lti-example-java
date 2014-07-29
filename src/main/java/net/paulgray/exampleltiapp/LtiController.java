@@ -6,10 +6,10 @@
 
 package net.paulgray.exampleltiapp;
 
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.httpclient.HttpStatus;
+import org.apache.http.HttpStatus;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.imsglobal.aspect.Lti;
 import org.imsglobal.basiclti.LtiVerificationResult;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LtiController {
     
     @Lti
-    @RequestMapping(value = {"/lti", "/test"}, method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/lti", method = RequestMethod.POST)
     public String ltiEntry(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable{
         System.out.println("serving request...");
         if(!result.getSuccess()){
@@ -40,11 +41,10 @@ public class LtiController {
         }
     }
     
-    @Lti
-    @RequestMapping(value = {"/another"}, method = {RequestMethod.POST, RequestMethod.GET})
-    public String ltiTest(HttpServletRequest request, ModelMap map, LtiVerificationResult result){
-        System.out.println("********************got another result:" + result.toString());
-        return "lti";
+    @RequestMapping(value = {"/register"}, method = {RequestMethod.POST, RequestMethod.GET})
+    public String ltiTest(@RequestParam Map params, ModelMap map){
+        map.put("params", params);
+        return "register";
     }
 
 }
