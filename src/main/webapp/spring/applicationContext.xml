@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
+    
+    
+    <aop:aspectj-autoproxy/>
+    
+    <bean id="myAspect" class="org.imsglobal.aspect.LtiLaunchVerifier">
+        <constructor-arg>
+            <bean class="net.paulgray.exampleltiapp.MockKeyService"/>
+        </constructor-arg>
+    </bean>
+    
+    <!--
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.DerbyDialect</prop> 
+                <prop key="hibernate.show_sql">true</prop> 
+                <prop key="hibernate.hbm2ddl.auto">update</prop> 
+                <prop key="hibernate.show_sql">false</prop> 
+            </props>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                <value>net.paulgray.mocklti2.tools.LtiTool</value>
+            </list>
+        </property>
+    </bean>
+    
+    <tx:annotation-driven/>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    
+    <jdbc:embedded-database id="dataSource" type="DERBY" >
+        <jdbc:script location="sql/tools.sql"/>
+    </jdbc:embedded-database> 
+    -->
+</beans>

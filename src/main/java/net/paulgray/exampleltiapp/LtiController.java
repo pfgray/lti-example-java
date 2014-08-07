@@ -43,6 +43,8 @@ public class LtiController {
     
     @RequestMapping(value = {"/register"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String ltiTest(@RequestParam Map params, ModelMap map){
+        String tcProfileUrl = (String) params.get("tc_profile_url");
+        
         map.put("params", params);
         return "register";
     }

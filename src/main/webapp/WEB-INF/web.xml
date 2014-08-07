@@ -4,24 +4,6 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
  
-    <display-name>Spring Web MVC Application</display-name>
- 
-    <servlet>
-        <servlet-name>lti</servlet-name>
-        <servlet-class>
-            org.springframework.web.servlet.DispatcherServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
- 
-    <servlet-mapping>
-        <servlet-name>lti</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>jsp</servlet-name>
-        <url-pattern>/WEB-INF/views/*</url-pattern>
-    </servlet-mapping>
+    <display-name>Mock Lti Producer</display-name>
 
 </web-app>
