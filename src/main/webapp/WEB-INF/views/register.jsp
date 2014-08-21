@@ -12,7 +12,9 @@
         <title>Register ExampleLti</title>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
         <script src="assets/scripts/app.js"></script>
-        <link rel="stylesheet" href="assets/styles/app.css"/>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/styles/app.css" rel="stylesheet"/>
         <script>
             window.tool_proxy_registration_request = ${tool_proxy_registration_request};
             window.tool_consumer_retrieval_token = "${tool_consumer_retrieval_token}";
@@ -20,25 +22,30 @@
     </head>
     <body ng-app="ltiApp">
         <div ng-controller="ExampleLtiAppController">
-            <h1>Got register request:</h1>
-            <h3>Required Params:</h3>
-            <b>lti_message_type:</b> ${params.lti_message_type} <br/>
-            <b>reg_key:</b> ${params.reg_key} <br/>
-            <b>reg_password:</b> ${params.reg_password} <br/>
-            <b>tc_profile_url:</b> ${params.tc_profile_url} <br/>
-            <b>launch_presentation_return_url:</b> ${params.launch_presentation_return_url} <br/>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4 main-view">
+                        <div class="header">
+                            LtiApp
+                        </div>
+                        <div ng-if="loadingProfile">
+                            <i class="fa fa-circle-o-notch fa-spin"></i> Loading Profile
+                        </div>
+                        <div ng-if="!loadingProfile">
+                            <div class="subheader">Capabilities offered:</div>
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3 main-view caps">
+                                    <div class="capability" ng-repeat="capability in tc_profile.capability_offered">
+                                        {{capability}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <h3>Recommended Params:</h3>
-            <b>launch_presentation_document_target:</b> ${params.launch_presentation_document_target}<br/>
-            <b>launch_presentation_height:</b> ${params.launch_presentation_height} <br/>
-            <b>launch_presentation_width:</b> ${params.launch_presentation_width} <br/>
-            <b>user_id:</b> ${params.user_id} <br/>
-            <b>roles:</b> ${params.roles} <br/>
-
-            <h1>{{stuff}}</h1>
-
-
-            <button onclick="window.location = '${params.launch_presentation_return_url}'">Back to Tool Consumer</button>
+                        <button class="btn" onclick="window.location = '${params.launch_presentation_return_url}'">Back to Tool Consumer</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

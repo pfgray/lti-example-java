@@ -1,3 +1,22 @@
-b{
-    color:#64afb3;
+body {
+    background-color:#64B377;
+}
+.main-view {
+    text-align:center;
+}
+.main-view button {
+    margin-top:1em;
+}
+.main-view :not(button) {
+    color:#EEEEEE;
+}
+.header{
+    font-size:5em;
+}
+.subheader{
+    font-size:1.25em;
+    font-weight:bold;
+}
+.caps{
+    text-align:left;
 }

@@ -9,8 +9,11 @@ app.controller('ExampleLtiAppController', ['$scope','$http', function($scope, $h
     $http.get('profile_retrieval?token=' + $scope.tc_profile_token)
         .success(function(data){
             console.log('got profile:', data);
+            $scope.loadingProfile = false;
+            $scope.tc_profile = data;
         })
         .error(function(data){
+            $scope.loadingProfile = false;
             console.error('error getting profile: ', data);
         });
 
