@@ -32,5 +32,8 @@
         <b>user_id:</b> ${params.user_id} <br/>
         <b>roles:</b> ${params.roles} <br/>
 
+
+        <button onclick="window.location = '${params.launch_presentation_return_url}'">Back to Tool Consumer</button>
+
     </body>
 </html>
