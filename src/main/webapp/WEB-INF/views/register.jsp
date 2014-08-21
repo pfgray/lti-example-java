@@ -10,6 +10,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Register ExampleLti</title>
+        <script src="/assets/app.js"></script>
+
         <style>
             b{
                 color:#64afb3;

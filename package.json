@@ -1,0 +1,29 @@
+{
+  "name": "mock-lti2-consumer",
+  "version": "1.0.0",
+  "description": "To run with docker: ---- ``` cd mock-lti2-consumer sudo docker build -t mock-lti2-consumer . sudo docker run -d -p 6000:8080 -t mock-lti2-consumer ``` To run on tomcat: ---- ``` cd mock-lti2-consumer mvn clean install ``` deploy the war file located in: `mock-lti2-consumer/target/mock-lti2-consumer-*.war`",
+  "main": "Gruntfile.js",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "shelljs": "^0.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pfgray/mock-lti2-consumer.git"
+  },
+  "keywords": [
+    "lti",
+    "ims"
+  ],
+  "author": "Paul Gray",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pfgray/mock-lti2-consumer/issues"
+  },
+  "homepage": "https://github.com/pfgray/mock-lti2-consumer"
+}
