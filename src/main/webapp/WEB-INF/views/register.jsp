@@ -31,14 +31,28 @@
                         <div ng-if="loadingProfile">
                             <i class="fa fa-circle-o-notch fa-spin"></i> Loading Profile
                         </div>
-                        <div ng-if="!loadingProfile">
-                            <div class="subheader">Capabilities offered:</div>
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-3 main-view caps">
-                                    <div class="capability" ng-repeat="capability in tc_profile.capability_offered">
-                                        {{capability}}
+                        <div ng-if="!loadingProfile" class="tc-profile">
+                            <div class="profile-step">
+                                <div class="subheader">Capabilities offered:</div>
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-3 main-view caps">
+                                        <div class="capability" ng-repeat="capability in tc_profile.capability_offered">
+                                            {{capability}}
+                                        </div>
                                     </div>
                                 </div>
+                                <div ng-if="tc_profile.capability_offered.length < 1">(none)</div>
+                            </div>
+                            <div class="profile-step">
+                                <div class="subheader">Services offered:</div>
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-3 main-view caps">
+                                        <div class="service" ng-repeat="service in tc_profile.service_offered">
+                                            {{service}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="tc_profile.service_offered.length < 1">(none)</div>
                             </div>
                         </div>
 
