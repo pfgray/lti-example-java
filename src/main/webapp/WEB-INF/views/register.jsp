@@ -41,11 +41,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div ng-if="tc_profile.capability_offered.length < 1">(none)</div>
-                            </div>
-                            <div class="profile-step">
-                                <div class="subheader">Services offered:</div>
-                                <div class="row">
+                              v ng-if="tc_profile.capability_offered.length < 1">(none)</div>
+                                                          </div>
+                                                          <div class="profile-step">
+                                                              <div class="subheader">Services offered:</div>
+                                                              <div   <diclass="row">
                                     <div class="col-md-6 col-md-offset-3 main-view caps">
                                         <div class="service" ng-repeat="service in tc_profile.service_offered">
                                             {{service}}
@@ -56,7 +56,20 @@
                             </div>
                         </div>
 
-                        <button class="btn" onclick="window.location = '${params.launch_presentation_return_url}'">Back to Tool Consumer</button>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn" onclick="sendTool()">
+                                    <i class="fa fa-send"></i> Initiate registration
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn" onclick="window.location = '${params.launch_presentation_return_url}'">
+                                    <i class="fa fa-reply"></i> Back to Tool Consumer
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

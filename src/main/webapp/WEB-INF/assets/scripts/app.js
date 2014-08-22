@@ -17,4 +17,8 @@ app.controller('ExampleLtiAppController', ['$scope','$http', function($scope, $h
             console.error('error getting profile: ', data);
         });
 
+    $scope.sendTool = function(){
+        //initiate the proxy registration request
+    }
+
 }]);
