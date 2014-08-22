@@ -41,11 +41,11 @@
                                         </div>
                                     </div>
                                 </div>
-                              v ng-if="tc_profile.capability_offered.length < 1">(none)</div>
-                                                          </div>
-                                                          <div class="profile-step">
-                                                              <div class="subheader">Services offered:</div>
-                                                              <div   <diclass="row">
+                                <div ng-if="tc_profile.capability_offered.length < 1">(none)</div>
+                            </div>
+                            <div class="profile-step">
+                                <div class="subheader">Services offered:</div>
+                                <div class="row">
                                     <div class="col-md-6 col-md-offset-3 main-view caps">
                                         <div class="service" ng-repeat="service in tc_profile.service_offered">
                                             {{service}}
