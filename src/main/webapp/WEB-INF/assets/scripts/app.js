@@ -19,6 +19,7 @@ app.controller('ExampleLtiAppController', ['$scope','$http', function($scope, $h
 
     $scope.sendTool = function(){
         //initiate the proxy registration request
+        
     }
 
 }]);

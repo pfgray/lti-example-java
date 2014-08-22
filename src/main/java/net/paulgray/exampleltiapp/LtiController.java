@@ -17,11 +17,12 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.imsglobal.aspect.Lti;
 import org.imsglobal.basiclti.LtiVerificationResult;
-import org.imsglobal.lti2.objects.ToolConsumer;
+import org.imsglobal.lti2.objects.consumer.ToolConsumer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,6 +76,14 @@ public class LtiController {
         //get the profile and return it.
         ToolConsumer tc = JsonReader.readJsonFromUrl(tc_profile_url, ToolConsumer.class);
         return new ResponseEntity(tc, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = {"/toolRegistration"}, method = RequestMethod.POST)
+    public ResponseEntity toolRegistration(@RequestBody Map<String, String> toolRegistrationDetails) {
+        //get the url to post to
+        //sign the post with the key/secret
+        //send the ToolProxyRegistrationRequest
+        return null;
     }
 
     public String nextRandomToken() {

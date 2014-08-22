@@ -1,7 +1,7 @@
 package net.paulgray.exampleltiapp;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.imsglobal.lti2.objects.ToolConsumer;
+import org.imsglobal.lti2.objects.consumer.ToolConsumer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
