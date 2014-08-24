@@ -48,6 +48,8 @@
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-3 main-view caps">
                                         <div class="service" ng-repeat="service in tc_profile.service_offered">
+                                            <b>{{service['@type']}}</b>
+                                            {{service['@id']}}
                                             {{service}}
                                         </div>
                                     </div>
@@ -58,14 +60,14 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <button class="btn" onclick="sendTool()">
+                                <button class="btn btn-default" ng-click="sendTool()" ng-disabled="registerReady">
                                     <i class="fa fa-send"></i> Initiate registration
                                 </button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <button class="btn" onclick="window.location = '${params.launch_presentation_return_url}'">
+                                <button class="btn btn-default" onclick="window.location = '${params.launch_presentation_return_url}'">
                                     <i class="fa fa-reply"></i> Back to Tool Consumer
                                 </button>
                             </div>

@@ -1,5 +1,6 @@
 package net.paulgray.exampleltiapp;
 
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.imsglobal.lti2.objects.consumer.ToolConsumer;
 
@@ -15,6 +16,7 @@ public class JsonReader {
 
     public static <T> T readJsonFromUrl(String url, Class<T> claz) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         InputStream is = new URL(url).openStream();
         try {
             return mapper.readValue(is, claz);
@@ -23,7 +25,4 @@ public class JsonReader {
         }
     }
 
-    public static void main(String args[]) throws IOException {
-        System.out.println(readJsonFromUrl("http://localhost:4000/api/profile", ToolConsumer.class));
-    }
 }
