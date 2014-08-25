@@ -22,6 +22,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -86,12 +87,12 @@ public class LtiController {
         ObjectMapper mapper = new ObjectMapper();
         String profileUrl = (String) params.get("tc_profile_url");
         String reg_key = (String) params.get("reg_key");
-        String reg_secret = (String) params.get("reg_secret");
+        String reg_password = (String) params.get("reg_password");
         //get the tcProfile url,
 
         //add it to a map with a randomly generated id in order for users to retrieve it after they're returned to the view
         String randomToken = nextRandomToken();
-        tool_consumer_profile_map.put(randomToken, new ToolConsumerInfo(profileUrl, reg_key, reg_secret));
+        tool_consumer_profile_map.put(randomToken, new ToolConsumerInfo(profileUrl, reg_key, reg_password));
         map.put("tool_consumer_retrieval_token", randomToken);
         map.put("tool_proxy_registration_request", mapper.writeValueAsString(params));
         map.put("params", params);
@@ -110,19 +111,26 @@ public class LtiController {
     }
 
     @RequestMapping(value = {"/toolRegistration"}, method = RequestMethod.POST)
-    public ResponseEntity toolRegistration(@RequestBody JsonNode toolRegistrationDetails) throws Exception {
-
+    public ResponseEntity toolRegistration(@RequestBody JsonNode toolRegistrationDetails, @RequestParam String token) throws Exception {
+        ToolProxy tp = new ToolProxy();
+        tp.setContext(ToolProxy.CONTEXT_URL);
+        tp.setCustom_url("custom_url");
+        tp.setTool_proxy_guid("guid");
+        tp.setId("id");
+        tp.setType("ToolProxy");
+        ObjectMapper mapper = new ObjectMapper();
         HttpPost request = new HttpPost(toolRegistrationDetails.get("endpoint").asText());
-        request.setEntity("");
+        request.setHeader("Content-type", "application/json");
+        request.setEntity(new StringEntity(mapper.writeValueAsString(tp)));
 
-        ToolConsumerInfo info = tool_consumer_profile_map.get(toolRegistrationDetails.get("token"));
+        ToolConsumerInfo info = tool_consumer_profile_map.get(token);
         signer.sign(request, info.reg_key, info.reg_secret);
 
         DefaultHttpClient client = new DefaultHttpClient();
         HttpResponse response = client.execute(request);
 
         if(response.getStatusLine().getStatusCode() >= 400){
-            throw new Exception("Got error from tool consumer");
+            throw new Exception("Got error from tool consumer: " + response.getStatusLine().getStatusCode());
         }
 
         return new ResponseEntity("Created tool proxy", HttpStatus.OK);

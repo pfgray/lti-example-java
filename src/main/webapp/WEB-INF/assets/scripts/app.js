@@ -29,9 +29,8 @@ app.controller('ExampleLtiAppController', ['$scope','$http', function($scope, $h
                 }
             }
         }
-
         $scope.creatingProxy = true;
-        $http.post('toolRegistration?token=' + $scope.tc_profile_token)
+        $http.post('toolRegistration?token=' + $scope.tc_profile_token, toolProxyInfo)
         .success(function(data){
             $scope.creatingProxy = false;
         })

@@ -16,12 +16,14 @@
     
     
     <aop:aspectj-autoproxy/>
-    
+
     <bean id="myAspect" class="org.imsglobal.aspect.LtiLaunchVerifier">
         <constructor-arg>
             <bean class="net.paulgray.exampleltiapp.MockKeyService"/>
         </constructor-arg>
     </bean>
+
+    <bean class="org.imsglobal.basiclti.LtiOauthSigner"/>
     
     <!--
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

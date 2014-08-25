@@ -50,7 +50,6 @@
                                         <div class="service" ng-repeat="service in tc_profile.service_offered">
                                             <b>{{service['@type']}}</b>
                                             {{service['@id']}}
-                                            {{service}}
                                         </div>
                                     </div>
                                 </div>
