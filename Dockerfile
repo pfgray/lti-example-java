@@ -13,6 +13,14 @@ RUN mv apache-tomcat-8.0.9 tomcat
 #install Maven
 RUN apt-get install -y maven
 
+#Download and install the latest branch(jackson2) of basiclti-util-java
+#TODO: this will need to change when jackson2 becomes available
+WORKDIR /root
+RUN git clone https://github.com/IMSGlobal/basiclti-util-java.git
+WORKDIR /root/basiclti-util-java
+RUN git checkout jackson2
+RUN mvn clean install
+
 #build mock-rest
 WORKDIR /root
 ADD ./ /root/lti-example
