@@ -9,6 +9,7 @@ package net.paulgray.exampleltiapp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -17,20 +18,21 @@ import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.imsglobal.aspect.Lti;
 import org.imsglobal.basiclti.LtiSigner;
 import org.imsglobal.basiclti.LtiSigningException;
 import org.imsglobal.basiclti.LtiVerificationResult;
 import org.imsglobal.lti2.objects.consumer.ToolConsumer;
+import org.imsglobal.lti2.objects.provider.SecurityContract;
+import org.imsglobal.lti2.objects.provider.ToolProfile;
 import org.imsglobal.lti2.objects.provider.ToolProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.apache.commons.io.IOUtils;
+
+
 
 /**
  *
@@ -106,6 +111,7 @@ public class LtiController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         //get the profile and return it.
+        System.out.println("retrieving tcp from: " + tc_profile_url);
         ToolConsumer tc = JsonReader.readJsonFromUrl(tc_profile_url, ToolConsumer.class);
         return new ResponseEntity(tc, HttpStatus.OK);
     }
@@ -114,11 +120,14 @@ public class LtiController {
     public ResponseEntity toolRegistration(@RequestBody JsonNode toolRegistrationDetails, @RequestParam String token) throws Exception {
         ToolProxy tp = new ToolProxy();
         tp.setContext(ToolProxy.CONTEXT_URL);
-        tp.setCustom_url("custom_url");
         tp.setTool_proxy_guid("guid");
         tp.setId("id");
         tp.setType("ToolProxy");
+        tp.setTool_profile(getToolProfile());
+        tp.setSecurity_contract(getSecurityContract());
+
         ObjectMapper mapper = new ObjectMapper();
+        System.out.println("Sending tool proxy registration request to: " + toolRegistrationDetails.get("endpoint").asText());
         HttpPost request = new HttpPost(toolRegistrationDetails.get("endpoint").asText());
         request.setHeader("Content-type", "application/json");
         request.setEntity(new StringEntity(mapper.writeValueAsString(tp)));
@@ -130,7 +139,10 @@ public class LtiController {
         HttpResponse response = client.execute(request);
 
         if(response.getStatusLine().getStatusCode() >= 400){
-            throw new Exception("Got error from tool consumer: " + response.getStatusLine().getStatusCode());
+            StringWriter writer = new StringWriter();
+            IOUtils.copy(response.getEntity().getContent(), writer, "utf-8");
+            String theString = writer.toString();
+            throw new Exception("Got error from tool consumer: " + response.getStatusLine().getStatusCode() + " - " + theString);
         }
 
         return new ResponseEntity("Created tool proxy", HttpStatus.OK);
@@ -138,6 +150,61 @@ public class LtiController {
 
     public String nextRandomToken() {
         return new BigInteger(130, random).toString(32);
+    }
+
+    private ToolProfile getToolProfile(){
+        ToolProfile tp = new ToolProfile();
+        tp.setBase_url_choice(getBaseUrlChoices());
+        tp.setResource_handler(getResourceHandler());
+        return tp;
+    }
+
+    private ArrayNode getBaseUrlChoices(){
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode choices = mapper.createArrayNode();
+
+        ObjectNode baseUrlChoice = mapper.createObjectNode();
+        baseUrlChoice.put("default_base_url", "http://acme.example.com/");
+        baseUrlChoice.put("secure_base_url", "http://acme.example.com/");
+
+        ObjectNode selector = mapper.createObjectNode();
+        ArrayNode url_applications = mapper.createArrayNode();
+        url_applications.add("MessageHandler");
+        selector.put("applies_to", url_applications);
+        baseUrlChoice.put("selector", selector);
+
+        choices.add(baseUrlChoice);
+        return choices;
+    }
+
+    private ArrayNode getResourceHandler() {
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayNode resourceHandler = mapper.createArrayNode();
+
+        ObjectNode resource = mapper.createObjectNode();
+
+        ArrayNode messageList = mapper.createArrayNode();
+        ObjectNode message = mapper.createObjectNode();
+        message.put("message_type", ToolConsumer.LtiCapability.BASICLTI_LAUNCH);
+        message.put("path", "/lti");
+        ArrayNode parameterList = mapper.createArrayNode();
+        ObjectNode parameter = mapper.createObjectNode();
+        parameter.put("name", "my_custom_course_offering_title_parameter");
+        parameter.put("variable", ToolConsumer.LtiCapability.CO_TITLE);
+        parameterList.add(parameter);
+        message.put("parameter", parameterList);
+        messageList.add(message);
+
+        resource.put("message", messageList);
+
+        resourceHandler.add(resource);
+        return resourceHandler;
+    }
+
+    private SecurityContract getSecurityContract(){
+        SecurityContract contract = new SecurityContract();
+        contract.setShared_secret("secret");
+        return contract;
     }
 
 }
