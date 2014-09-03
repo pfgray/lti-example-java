@@ -6,9 +6,9 @@ RUN apt-get install -y openjdk-7-jdk
 
 #install tomcat
 WORKDIR /opt
-RUN wget http://apache.arvixe.com/tomcat/tomcat-8/v8.0.9/bin/apache-tomcat-8.0.9.tar.gz
-RUN tar -zxvf apache-tomcat-8.0.9.tar.gz
-RUN mv apache-tomcat-8.0.9 tomcat
+RUN wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.11/bin/apache-tomcat-8.0.11.tar.gz
+RUN tar -zxvf apache-tomcat-8.0.11.tar.gz
+RUN mv apache-tomcat-8.0.11 tomcat
 
 #install Maven
 RUN apt-get install -y maven
