@@ -7,20 +7,18 @@
 package net.paulgray.exampleltiapp;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
-import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import net.paulgray.exampleltiapp.config.LtiProviderConfig;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -28,7 +26,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.imsglobal.aspect.Lti;
 import org.imsglobal.basiclti.LtiSigner;
-import org.imsglobal.basiclti.LtiSigningException;
 import org.imsglobal.basiclti.LtiVerificationResult;
 import org.imsglobal.lti2.objects.consumer.ToolConsumer;
 import org.imsglobal.lti2.objects.provider.SecurityContract;
@@ -56,6 +53,7 @@ public class LtiController {
 
     private Map<String, ToolConsumerInfo> tool_consumer_profile_map = new HashMap<>();
     private SecureRandom random = new SecureRandom();
+    private LtiProviderConfig ltiConfig = new LtiProviderConfig();
 
     private class ToolConsumerInfo {
         public String profileUrl;
@@ -75,7 +73,6 @@ public class LtiController {
     @Lti
     @RequestMapping(value = "/lti", method = RequestMethod.POST)
     public String ltiEntry(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable{
-        System.out.println("serving request...");
         if(!result.getSuccess()){
             resp.setStatus(HttpStatus.FORBIDDEN.value());
             return "error";
@@ -111,7 +108,6 @@ public class LtiController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         //get the profile and return it.
-        System.out.println("retrieving tcp from: " + tc_profile_url);
         ToolConsumer tc = JsonReader.readJsonFromUrl(tc_profile_url, ToolConsumer.class);
         return new ResponseEntity(tc, HttpStatus.OK);
     }
@@ -127,7 +123,6 @@ public class LtiController {
         tp.setSecurity_contract(getSecurityContract());
 
         ObjectMapper mapper = new ObjectMapper();
-        System.out.println("Sending tool proxy registration request to: " + toolRegistrationDetails.get("endpoint").asText());
         HttpPost request = new HttpPost(toolRegistrationDetails.get("endpoint").asText());
         request.setHeader("Content-type", "application/json");
         request.setEntity(new StringEntity(mapper.writeValueAsString(tp)));
@@ -164,8 +159,8 @@ public class LtiController {
         ArrayNode choices = mapper.createArrayNode();
 
         ObjectNode baseUrlChoice = mapper.createObjectNode();
-        baseUrlChoice.put("default_base_url", "http://acme.example.com/");
-        baseUrlChoice.put("secure_base_url", "http://acme.example.com/");
+        baseUrlChoice.put("default_base_url", ltiConfig.default_base_url);
+        baseUrlChoice.put("secure_base_url", ltiConfig.secure_base_url);
 
         ObjectNode selector = mapper.createObjectNode();
         ArrayNode url_applications = mapper.createArrayNode();
@@ -186,7 +181,7 @@ public class LtiController {
         ArrayNode messageList = mapper.createArrayNode();
         ObjectNode message = mapper.createObjectNode();
         message.put("message_type", ToolConsumer.LtiCapability.BASICLTI_LAUNCH);
-        message.put("path", "/lti");
+        message.put("path", ltiConfig.basic_lti_launch_path);
         ArrayNode parameterList = mapper.createArrayNode();
         ObjectNode parameter = mapper.createObjectNode();
         parameter.put("name", "my_custom_course_offering_title_parameter");
@@ -206,5 +201,17 @@ public class LtiController {
         contract.setShared_secret("secret");
         return contract;
     }
+
+    @RequestMapping(value = "/config", method = RequestMethod.GET)
+    public ResponseEntity getConfig() {
+        return new ResponseEntity(ltiConfig, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/config", method = RequestMethod.POST)
+    public ResponseEntity editConfig(@RequestBody LtiProviderConfig config) {
+        ltiConfig = config;
+        return new ResponseEntity(ltiConfig, HttpStatus.OK);
+    }
+
 
 }

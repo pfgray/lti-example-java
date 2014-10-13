@@ -23,3 +23,18 @@ body {
 .profile-step{
     margin-top:1em;
 }
+.config{
+    margin-top: 2em;
+}
+.config .subheader{
+    margin-bottom: 0.5em;
+}
+.config label{
+    display:block;
+    font-weight:500;
+}
+.config input {
+    background-color: rgb(111, 111, 111);
+    border: none;
+    padding: 0.5em;
+}

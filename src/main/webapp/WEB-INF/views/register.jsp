@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : register
     Created on : Jul 28, 2014, 11:45:08 PM
     Author     : paul
@@ -71,6 +71,22 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid config">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4 main-view">
+                        <div class="subheader">LtiApp Configuration:</div>
+                        <label>default_base_url: <input type="text" ng-model="config.default_base_url"/></label>
+                        <label>secure_base_url: <input type="text" ng-model="config.secure_base_url"/></label>
+                        <label>basic_lti_launch_path: <input type="text" ng-model="config.basic_lti_launch_path"/></label>
+                        <button ng-if="!savingConfig" ng-click="saveConfig(config)" class="btn btn-default">
+                            <i class="fa fa-floppy-o"></i> Save
+                        </button>
+                        <button ng-if="savingConfig" class="btn btn-default">
+                            <i class="fa fa-circle-o-notch fa-spin"></i> Saving...
+                        </button>
                     </div>
                 </div>
             </div>

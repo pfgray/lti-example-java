@@ -1,6 +1,6 @@
 var app = angular.module('ltiApp', []);
 
-app.controller('ExampleLtiAppController', ['$scope','$http', function($scope, $http){
+app.controller('ExampleLtiAppController', ['$scope','$http', 'ConfigService', function($scope, $http, configService){
 
     $scope.registration_request = window.tool_proxy_registration_request;
     $scope.tc_profile_token = window.tool_consumer_retrieval_token;
@@ -41,5 +41,27 @@ app.controller('ExampleLtiAppController', ['$scope','$http', function($scope, $h
 
         console.log("endpoint:", toolProxyInfo);
     }
+    configService.getConfig()
+    .success(function(data){
+        console.log('got config:', data);
+        $scope.config = data;
+    });
+    $scope.saveConfig = function(config){
+        configService.updateConfig(config)
+        .success(function(data){
+            console.log('updated config:', data);
+            $scope.config = data;
+        });
+    }
+}]);
 
+app.service('ConfigService', ['$http', function($http){
+    var ConfigService = {};
+    ConfigService.getConfig = function(){
+        return $http.get('config');
+    }
+    ConfigService.updateConfig = function(config){
+        return $http.post('config', config);
+    }
+    return ConfigService;
 }]);
