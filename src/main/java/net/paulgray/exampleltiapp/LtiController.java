@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -54,6 +55,8 @@ public class LtiController {
     private Map<String, ToolConsumerInfo> tool_consumer_profile_map = new HashMap<>();
     private SecureRandom random = new SecureRandom();
     private LtiProviderConfig ltiConfig = new LtiProviderConfig();
+    private final static Logger logger = Logger.getLogger(LtiController.class.getName());
+
 
     private class ToolConsumerInfo {
         public String profileUrl;
@@ -74,6 +77,8 @@ public class LtiController {
     @RequestMapping(value = "/lti", method = RequestMethod.POST)
     public String ltiEntry(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable{
         if(!result.getSuccess()){
+            logger.info("Lti verification failed! erroe was: " + result.getError());
+            logger.info("   message: " + result.getMessage());
             resp.setStatus(HttpStatus.FORBIDDEN.value());
             return "error";
         } else {
