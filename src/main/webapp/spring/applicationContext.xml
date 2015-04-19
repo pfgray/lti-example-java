@@ -22,11 +22,11 @@
             <bean class="net.paulgray.exampleltiapp.MockKeyService"/>
         </constructor-arg>
         <constructor-arg>
-            <bean class="org.imsglobal.basiclti.LtiOauthVerifier"/>
+            <bean class="org.imsglobal.lti.launch.LtiOauthVerifier"/>
         </constructor-arg>
     </bean>
 
-    <bean class="org.imsglobal.basiclti.LtiOauthSigner"/>
+    <bean class="org.imsglobal.lti.launch.LtiOauthSigner"/>
 
     <!--
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

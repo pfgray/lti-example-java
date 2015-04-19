@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.imsglobal</groupId>
             <artifactId>basiclti-util</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>javax.websocket</groupId>
