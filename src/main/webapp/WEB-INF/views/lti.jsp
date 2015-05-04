@@ -9,9 +9,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/styles/app.css" rel="stylesheet"/>
         <title>MockLti</title>
     </head>
-    <body>
+    <body style="height:100%;">
         <h1>Hello ${name}</h1>
         <pre>${launch}</pre>
     </body>

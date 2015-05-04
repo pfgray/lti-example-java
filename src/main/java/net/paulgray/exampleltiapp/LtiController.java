@@ -88,7 +88,7 @@ public class LtiController {
             return "lti";
         }
     }
-    
+
     @RequestMapping(value = {"/register"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String ltiTest(@RequestParam Map params, ModelMap map) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -109,6 +109,7 @@ public class LtiController {
     @RequestMapping(value = {"/profile_retrieval"}, method = RequestMethod.GET)
     public ResponseEntity retrieveProfile(@RequestParam String token) throws IOException {
         String tc_profile_url = tool_consumer_profile_map.get(token).profileUrl;
+        logger.info("******Got ");
         if(tc_profile_url == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
@@ -167,11 +168,7 @@ public class LtiController {
         baseUrlChoice.put("default_base_url", ltiConfig.default_base_url);
         baseUrlChoice.put("secure_base_url", ltiConfig.secure_base_url);
 
-        ObjectNode selector = mapper.createObjectNode();
-        ArrayNode url_applications = mapper.createArrayNode();
-        url_applications.add("MessageHandler");
-        selector.put("applies_to", url_applications);
-        baseUrlChoice.put("selector", selector);
+        baseUrlChoice.put("selector", "DefaultSelector");
 
         choices.add(baseUrlChoice);
         return choices;
@@ -196,9 +193,16 @@ public class LtiController {
         messageList.add(message);
 
         resource.put("message", messageList);
+        resource.put("name", getValue("Lti Example App"));
 
         resourceHandler.add(resource);
         return resourceHandler;
+    }
+
+    private ObjectNode getValue(String value){
+        ObjectNode valueNode = new ObjectMapper().createObjectNode();
+        valueNode.put("default_value", value);
+        return valueNode;
     }
 
     private SecurityContract getSecurityContract(){
