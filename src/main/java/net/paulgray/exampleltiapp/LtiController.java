@@ -84,7 +84,7 @@ public class LtiController {
         } else {
             map.put("name", result.getLtiLaunchResult().getUser().getId());
             ObjectMapper mapper = new ObjectMapper();
-            map.put("launch", mapper.writeValueAsString(result.getLtiLaunchResult()));
+            map.put("launch", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(result.getLtiLaunchResult()));
             return "lti";
         }
     }

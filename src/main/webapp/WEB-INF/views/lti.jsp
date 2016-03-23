@@ -16,6 +16,10 @@
     </head>
     <body style="height:100%;">
         <h1>Hello ${name}</h1>
-        <pre>${launch}</pre>
+        <div class="container">
+          <div class="row">
+            <pre>${launch}</pre>
+          </div>
+        </div>
     </body>
 </html>
