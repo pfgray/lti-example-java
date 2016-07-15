@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -86,6 +87,13 @@ public class LtiController {
         } else {
             map.put("name", result.getLtiLaunchResult().getUser().getId());
             ObjectMapper mapper = new ObjectMapper();
+
+            Map<String, String> params = new HashMap<>();
+            for (String param: Collections.list(request.getParameterNames())) {
+                params.put(param, request.getParameter(param));
+            }
+            map.put("params", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(params));
+
             map.put("launch", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(result.getLtiLaunchResult()));
             return "lti";
         }

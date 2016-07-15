@@ -20,6 +20,10 @@
           <div class="row">
             <pre>${launch}</pre>
           </div>
+          <div class="row">
+            <h1>Params:</h1>
+            <pre>${params}</pre>
+          </div>
         </div>
     </body>
 </html>
