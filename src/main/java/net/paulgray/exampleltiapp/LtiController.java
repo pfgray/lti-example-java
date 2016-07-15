@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.imsglobal.aspect.Lti;
 import org.imsglobal.lti.launch.LtiSigner;
 import org.imsglobal.lti.launch.LtiVerificationResult;
+import org.imsglobal.lti.launch.LtiVerifier;
 import org.imsglobal.lti2.objects.consumer.ToolConsumer;
 import org.imsglobal.lti2.objects.provider.SecurityContract;
 import org.imsglobal.lti2.objects.provider.ToolProfile;
@@ -77,8 +78,9 @@ public class LtiController {
     @RequestMapping(value = "/lti", method = RequestMethod.POST)
     public String ltiEntry(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable{
         if(!result.getSuccess()){
-            logger.info("Lti verification failed! erroe was: " + result.getError());
+            logger.info("Lti verification failed! error was: " + result.getError());
             logger.info("   message: " + result.getMessage());
+            map.put("ltiError", result.getError().toString());
             resp.setStatus(HttpStatus.FORBIDDEN.value());
             return "error";
         } else {

@@ -16,5 +16,8 @@
     </head>
     <body style="background-color:#FD6F6F; height:100%;">
         <h1>Access Denied!</h1>
+        <div>
+          ${ ltiError }
+        </div>
     </body>
 </html>
