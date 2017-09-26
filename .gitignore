@@ -6,5 +6,7 @@ pom.xml.next
 release.properties
 .idea/
 *.iml
+derby.log
+
 
 node_modules/
